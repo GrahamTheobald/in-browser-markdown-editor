@@ -5,9 +5,8 @@ import Documents from './Documents'
 
 function App() {
 	const [count, setCount] = useState(0)
-
 	return (
-		<div className=' font-Roboto'>
+		<div className=' font-Roboto flex'>
 			<Sidebar />
 			<div>
 				<Nav />

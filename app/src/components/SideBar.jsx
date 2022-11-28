@@ -1,5 +1,5 @@
 import React from 'react'
 
-export default function SideBar() {
-	return <div>SideBar</div>
+export default function SideBar({ opened = false }) {
+	return <>{opened && <div></div>}</>
 }
