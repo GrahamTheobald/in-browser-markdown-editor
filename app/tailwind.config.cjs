@@ -17,6 +17,11 @@ module.exports = {
 				orange1: '#E46643',
 				orange2: '#F39765',
 			},
+			fontFamily: {
+				Roboto: ['Roboto', 'sans-serif'],
+				'Roboto-Mono': ['Roboto Mono', 'monospace'],
+				'Roboto-Slab': ['Roboto Slab', 'serif'],
+			},
 		},
 	},
 	plugins: [],
