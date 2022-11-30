@@ -5,7 +5,7 @@ import del from '../assets/icon-delete.svg'
 export default function Delete() {
 	return (
 		<div>
-			<Icon src={del} />
+			<Icon src={del} small={true} />
 		</div>
 	)
 }

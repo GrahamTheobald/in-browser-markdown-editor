@@ -1,24 +1,30 @@
 import React from 'react'
 import SideBarToggle from './SidebarToggle'
 import Delete from './Delete'
-import Logo from './utility/Logo'
+import logo from '../assets/logo.svg'
+import Icon from './utility/Icon'
 import Button from './Button'
+import File from './File'
 import save from '../assets/icon-save.svg'
 
-export default function Nav() {
+export default function Nav({ sidebarOpen, activeFile }) {
 	return (
-		<section className='flex w-screen bg-dark2 text-light1 h-12 md:h-16'>
+		<section className='flex flex-grow bg-dark2 text-light1 h-12 md:h-16'>
 			<SideBarToggle />
 			<nav className='flex items-center flex-grow gap-4 p-1 md:p-2'>
-				<div className='hidden lg:block'>
-					<Logo />
+				<div className='hidden p-6 lg:block'>
+					<Icon src={logo} className={'border-r-mid2 border-r'} />
 				</div>
-
-				<div />
-				<div className=' ml-auto justify-self-end'>
-					<Delete />
-				</div>
-				<Button src={save} text={'Save Changes'} />
+				<div className='border-r-mid2 border-r lg:h-full'></div>
+				{activeFile && <File content={activeFile} />}
+				{!sidebarOpen && (
+					<div className=' ml-auto flex gap-4 items-center'>
+						<Delete />
+						<div>
+							<Button src={save} text={'Save Changes'} small={true} />
+						</div>
+					</div>
+				)}
 			</nav>
 		</section>
 	)

@@ -1,7 +1,7 @@
 import React from 'react'
 
-export default function Icon({ src, small = false }) {
+export default function Icon({ src, small = false, light = false }) {
 	let className = ''
-	small ? (className += 'w-4') : ''
+	className += small ? 'w-4' : ''
 	return <img className={className} src={src} />
 }
