@@ -52,49 +52,119 @@ export default function useRenderMD(markdown) {
 function createLineElement(firstWord, line) {
 	switch (firstWord) {
 		case '#':
-			return <h1 className={LINE_FORMATS[firstWord]}>{restOfLine(line)}</h1>
+			return (
+				<h1 className={LINE_FORMATS[firstWord]}>
+					{inlineScan(lineToLetters(restOfLine(line)))}
+				</h1>
+			)
 		case '##':
-			return <h2 className={LINE_FORMATS[firstWord]}>{restOfLine(line)}</h2>
+			return (
+				<h2 className={LINE_FORMATS[firstWord]}>
+					{inlineScan(lineToLetters(restOfLine(line)))}
+				</h2>
+			)
 		case '###':
-			return <h3 className={LINE_FORMATS[firstWord]}>{restOfLine(line)}</h3>
+			return (
+				<h3 className={LINE_FORMATS[firstWord]}>
+					{inlineScan(lineToLetters(restOfLine(line)))}
+				</h3>
+			)
 		case '####':
-			return <h4 className={LINE_FORMATS[firstWord]}>{restOfLine(line)}</h4>
+			return (
+				<h4 className={LINE_FORMATS[firstWord]}>
+					{inlineScan(lineToLetters(restOfLine(line)))}
+				</h4>
+			)
 		case '#####':
-			return <h5 className={LINE_FORMATS[firstWord]}>{restOfLine(line)}</h5>
+			return (
+				<h5 className={LINE_FORMATS[firstWord]}>
+					{inlineScan(lineToLetters(restOfLine(line)))}
+				</h5>
+			)
 		case '######':
-			return <h6 className={LINE_FORMATS[firstWord]}>{restOfLine(line)}</h6>
+			return (
+				<h6 className={LINE_FORMATS[firstWord]}>
+					{inlineScan(lineToLetters(restOfLine(line)))}
+				</h6>
+			)
 		case '>':
-			return <div className={LINE_FORMATS[firstWord]}>{restOfLine(line)}</div>
+			return (
+				<div className={LINE_FORMATS[firstWord]}>
+					{inlineScan(lineToLetters(restOfLine(line)))}
+				</div>
+			)
 		default:
 			return <p className='pp'>{inlineScan(lineToLetters(line))}</p>
 	}
 }
 
 function inlineScan(letters) {
-	letters.forEach((letter, index) => {
-		if (INLINE_SYMBOLS.includes(letter)) {
-			const _index = index + 1
-			const spanIndex = inlineSymbolSearch(letters.slice(_index), letter)
-			if (spanIndex >= 0) {
+	letters.forEach((l, index) => {
+		if (INLINE_SYMBOLS.includes(l)) {
+			const { symbol, symbolSpan } = inlineSearchSettings(letters, index, l)
+			const searchLetters = letters.slice(index + symbolSpan)
+			const indexSpan = inlineSearch(searchLetters, symbol, symbolSpan)
+
+			if (indexSpan === -1) return
+
+			if (l === '[') {
+				const urlStart = index + indexSpan + symbolSpan + 1
+				const urlSpan = inlineAnchorSearch(letters, urlStart)
+				if (urlSpan === -1) return
+				const entireSpan = urlStart + urlSpan + 1
+				const url = letters.slice(urlStart + 1, urlStart + urlSpan).join('')
 				const element = (
-					<span className={INLINE_FORMATS[letter]}>
-						{inlineScan(letters.slice(_index, _index + spanIndex))}
-					</span>
+					<a href={url} className={INLINE_FORMATS[symbol]}>
+						{searchLetters.slice(0, indexSpan)}
+					</a>
 				)
-				letters.splice(index, spanIndex + 2, element)
-				return inlineScan(letters)
+				letters.splice(index, entireSpan, element)
+
+				return
 			}
+			const element = (
+				<span className={INLINE_FORMATS[symbol]}>
+					{inlineScan(searchLetters.slice(0, indexSpan))}
+				</span>
+			)
+			letters.splice(index, indexSpan + symbolSpan * 2, element)
+			return
 		}
 	})
 	return letters
 }
 
-function inlineSymbolSearch(letters, symbol, indexes = 1) {
-	return letters.findIndex((letter) => letter === symbol)
+function inlineSearch(letters, symbol, symbolSpan) {
+	symbol = symbol === '[' ? ']' : symbol
+	if (symbolSpan === 1) {
+		return letters.findIndex((l) => l === symbol)
+	}
+	if (symbolSpan === 2) {
+		return letters.findIndex((l, index) => {
+			const next = letters[index + 1]
+			if (!next) return false
+			const both = l + next
+			return both === symbol
+		})
+	}
+}
+
+function inlineAnchorSearch(letters, index) {
+	if (letters[index] !== '(') return -1
+	return letters.slice(index).findIndex((l) => l === ')')
+}
+
+function inlineSearchSettings(letters, index, symbol) {
+	if (['*', '-'].includes(symbol)) {
+		if (letters[index + 1] === symbol) {
+			return { symbol: symbol + symbol, symbolSpan: 2 }
+		}
+	}
+	return { symbol, symbolSpan: 1 }
 }
 
 function createUnorderedList(line, lines, _lines) {
-	const block = [<li>{restOfLine(line)}</li>]
+	const block = [<li>{inlineScan(lineToLetters(restOfLine(line)))}</li>]
 	while (lines.length > 0) {
 		const next = lines.shift().split(' ')
 
@@ -104,12 +174,16 @@ function createUnorderedList(line, lines, _lines) {
 			_lines.push(element)
 			return
 		}
-		block.push(<li>{restOfLine(next)}</li>)
+		block.push(<li>{inlineScan(lineToLetters(restOfLine(next)))}</li>)
 	}
 }
 
 function createOrderedList(line, lines, _lines) {
-	const block = [<li data-number={line[0]}>{restOfLine(line)}</li>]
+	const block = [
+		<li data-number={line[0]}>
+			{inlineScan(lineToLetters(restOfLine(line)))}
+		</li>,
+	]
 	while (lines.length > 0) {
 		const next = lines.shift().split(' ')
 
@@ -119,7 +193,11 @@ function createOrderedList(line, lines, _lines) {
 			_lines.push(element)
 			return
 		}
-		block.push(<li data-number={next[0]}>{restOfLine(next)}</li>)
+		block.push(
+			<li data-number={next[0]}>
+				{inlineScan(lineToLetters(restOfLine(next)))}
+			</li>
+		)
 	}
 }
 
@@ -142,7 +220,7 @@ function orderedListCheck(firstWord) {
 }
 
 function restOfLine(line) {
-	return line.slice(1, line.length).join(' ')
+	return line.slice(1, line.length)
 }
 
 function lineToLetters(line) {

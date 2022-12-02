@@ -48,7 +48,7 @@
 		@apply text-mid2;
 	}
 	.pb {
-		@apply text-mid2 font-bold text-sm;
+		@apply font-bold;
 	}
 	.pi {
 		@apply italic;
