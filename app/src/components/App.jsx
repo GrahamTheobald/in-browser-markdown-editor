@@ -7,7 +7,7 @@ import data from '../data/data.json'
 export const HandlerContext = createContext()
 
 function App() {
-	const [sidebarOpen, setSidebarOpen] = useState(true)
+	const [sidebarOpen, setSidebarOpen] = useState(false)
 	const [files, setFiles] = useState(data)
 	const [activeFileID, setActiveFileID] = useState(2)
 
@@ -29,7 +29,7 @@ function App() {
 		<HandlerContext.Provider value={HandlerContextValue}>
 			<div className=' font-Roboto flex h-screen overflow-x-hidden'>
 				<Sidebar sidebarOpen={sidebarOpen} files={files} />
-				<div className=' flex-grow w-full overflow-x-hidden min-w-min'>
+				<div className='flex-grow w-full min-w-min h-full overflow-x-hidden '>
 					<Nav sidebarOpen={sidebarOpen} activeFile={activeFile} />
 					<Documents activeFile={activeFile} />
 				</div>

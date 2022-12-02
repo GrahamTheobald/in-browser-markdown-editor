@@ -9,7 +9,7 @@ export default function SideBar({ sidebarOpen, files }) {
 	return (
 		<>
 			{sidebarOpen && (
-				<div className='flex flex-col flex-shrink-0 bg-dark1 w-60 p-4 h-screen md:p-6'>
+				<div className='flex flex-col flex-shrink-0 bg-dark1 w-60 p-4 h-full md:p-6'>
 					<div className='py-1 lg:hidden'>
 						<Icon src={logo} />
 					</div>

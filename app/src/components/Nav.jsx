@@ -9,7 +9,7 @@ import save from '../assets/icon-save.svg'
 
 export default function Nav({ sidebarOpen, activeFile }) {
 	return (
-		<section className='flex flex-grow bg-dark2 text-light1 h-12 md:h-16'>
+		<section className='flex flex-grow bg-dark2 text-light1 h-12 min-w-[50vw] md:h-16'>
 			<SideBarToggle />
 			<nav className='flex items-center flex-grow gap-4 p-1 md:p-2'>
 				<div className='hidden p-6 lg:block'>

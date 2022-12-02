@@ -3,3 +3,78 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+	.ph1,
+	.ph2,
+	.ph3,
+	.ph4,
+	.ph5,
+	.ph6,
+	.pp,
+	.pol,
+	.pul,
+	.pblockq,
+	.pblockc {
+		@apply font-Roboto-Slab mb-4;
+	}
+	.pp,
+	.pol,
+	.pul,
+	.pcode,
+	.pblockq,
+	.pblockc {
+		@apply text-sm;
+	}
+	.ph1 {
+		@apply text-[2rem] font-bold;
+	}
+	.ph2 {
+		@apply text-[1.75rem] font-thin;
+	}
+	.ph3 {
+		@apply text-2xl font-bold;
+	}
+	.ph4 {
+		@apply text-xl font-bold;
+	}
+	.ph5 {
+		@apply text-base font-bold;
+	}
+	.ph6 {
+		@apply text-orange1 text-sm font-bold;
+	}
+	.pp {
+		@apply text-mid2;
+	}
+	.pb {
+		@apply text-mid2 font-bold text-sm;
+	}
+	.pi {
+		@apply italic;
+	}
+	.pol,
+	.pul {
+		@apply text-mid2 pl-12 flex flex-col gap-2;
+	}
+	.pol li::before {
+		@apply inline-block -ml-4 mr-2 min-w-min;
+		content: attr(data-number);
+	}
+	.pul li::before {
+		@apply text-orange1 font-bold inline-block w-4 -ml-4;
+		content: '\2022';
+	}
+	.pcode {
+		@apply text-dark1 font-Roboto-Mono;
+	}
+	.pblockc {
+		@apply p-6 bg-light2 text-dark1 font-thin font-Roboto-Mono rounded-md;
+	}
+	.pblockq {
+		@apply p-6 bg-light2 text-dark1 font-bold rounded-md border-l-4 border-l-orange1;
+	}
+	.pa {
+		@apply underline hover:cursor-pointer;
+	}
+}
