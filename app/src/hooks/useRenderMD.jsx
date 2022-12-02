@@ -23,6 +23,8 @@ const INLINE_FORMATS = {
 
 const INLINE_SYMBOLS = ['`', '[', '*', '**', '_', '__']
 
+let ID = 1
+
 export default function useRenderMD(markdown) {
 	let lines = markdown.split('\n')
 	const _lines = []
@@ -53,49 +55,49 @@ function createLineElement(firstWord, line) {
 	switch (firstWord) {
 		case '#':
 			return (
-				<h1 key={useId()} className={LINE_FORMATS[firstWord]}>
+				<h1 key={ID++} className={LINE_FORMATS[firstWord]}>
 					{inlineScan(lineToLetters(restOfLine(line)))}
 				</h1>
 			)
 		case '##':
 			return (
-				<h2 key={useId()} className={LINE_FORMATS[firstWord]}>
+				<h2 key={ID++} className={LINE_FORMATS[firstWord]}>
 					{inlineScan(lineToLetters(restOfLine(line)))}
 				</h2>
 			)
 		case '###':
 			return (
-				<h3 key={useId()} className={LINE_FORMATS[firstWord]}>
+				<h3 key={ID++} className={LINE_FORMATS[firstWord]}>
 					{inlineScan(lineToLetters(restOfLine(line)))}
 				</h3>
 			)
 		case '####':
 			return (
-				<h4 key={useId()} className={LINE_FORMATS[firstWord]}>
+				<h4 key={ID++} className={LINE_FORMATS[firstWord]}>
 					{inlineScan(lineToLetters(restOfLine(line)))}
 				</h4>
 			)
 		case '#####':
 			return (
-				<h5 key={useId()} className={LINE_FORMATS[firstWord]}>
+				<h5 key={ID++} className={LINE_FORMATS[firstWord]}>
 					{inlineScan(lineToLetters(restOfLine(line)))}
 				</h5>
 			)
 		case '######':
 			return (
-				<h6 key={useId()} className={LINE_FORMATS[firstWord]}>
+				<h6 key={ID++} className={LINE_FORMATS[firstWord]}>
 					{inlineScan(lineToLetters(restOfLine(line)))}
 				</h6>
 			)
 		case '>':
 			return (
-				<div key={useId()} className={LINE_FORMATS[firstWord]}>
+				<div key={ID++} className={LINE_FORMATS[firstWord]}>
 					{inlineScan(lineToLetters(restOfLine(line)))}
 				</div>
 			)
 		default:
 			return (
-				<p key={useId()} className='pp'>
+				<p key={ID++} className='pp'>
 					{inlineScan(lineToLetters(line))}
 				</p>
 			)
@@ -118,7 +120,7 @@ function inlineScan(letters) {
 				const entireSpan = urlStart + urlSpan + 1
 				const url = letters.slice(urlStart + 1, urlStart + urlSpan).join('')
 				const element = (
-					<a href={url} key={useId()} className={INLINE_FORMATS[symbol]}>
+					<a href={url} key={ID++} className={INLINE_FORMATS[symbol]}>
 						{searchLetters.slice(0, indexSpan)}
 					</a>
 				)
@@ -127,7 +129,7 @@ function inlineScan(letters) {
 				return
 			}
 			const element = (
-				<span key={useId()} className={INLINE_FORMATS[symbol]}>
+				<span key={ID++} className={INLINE_FORMATS[symbol]}>
 					{inlineScan(searchLetters.slice(0, indexSpan))}
 				</span>
 			)
@@ -169,7 +171,7 @@ function inlineSearchSettings(letters, index, symbol) {
 
 function createUnorderedList(line, lines, _lines) {
 	const block = [
-		<li key={useId()}>{inlineScan(lineToLetters(restOfLine(line)))}</li>,
+		<li key={ID++}>{inlineScan(lineToLetters(restOfLine(line)))}</li>,
 	]
 	while (lines.length > 0) {
 		const next = lines.shift().split(' ')
@@ -177,7 +179,7 @@ function createUnorderedList(line, lines, _lines) {
 		if (next[0] !== '-') {
 			lines.unshift(next.join(' '))
 			const element = (
-				<ul key={useId()} className='pul'>
+				<ul key={ID++} className='pul'>
 					{block}
 				</ul>
 			)
@@ -185,14 +187,14 @@ function createUnorderedList(line, lines, _lines) {
 			return
 		}
 		block.push(
-			<li key={useId()}>{inlineScan(lineToLetters(restOfLine(next)))}</li>
+			<li key={ID++}>{inlineScan(lineToLetters(restOfLine(next)))}</li>
 		)
 	}
 }
 
 function createOrderedList(line, lines, _lines) {
 	const block = [
-		<li key={useId()} data-number={line[0]}>
+		<li key={ID++} data-number={line[0]}>
 			{inlineScan(lineToLetters(restOfLine(line)))}
 		</li>,
 	]
@@ -202,7 +204,7 @@ function createOrderedList(line, lines, _lines) {
 		if (!orderedListCheck(next[0])) {
 			lines.unshift(next.join(' '))
 			const element = (
-				<ol key={useId()} className='pol'>
+				<ol key={ID++} className='pol'>
 					{block}
 				</ol>
 			)
@@ -210,7 +212,7 @@ function createOrderedList(line, lines, _lines) {
 			return
 		}
 		block.push(
-			<li key={useId()} data-number={next[0]}>
+			<li key={ID++} data-number={next[0]}>
 				{inlineScan(lineToLetters(restOfLine(next)))}
 			</li>
 		)
@@ -223,7 +225,7 @@ function createCodeBlock(lines, _lines) {
 		const next = lines.shift()
 		if (next == '```') {
 			const element = (
-				<pre key={useId()} className='pblockc'>
+				<pre key={ID++} className='pblockc'>
 					{block.join('\n')}
 				</pre>
 			)

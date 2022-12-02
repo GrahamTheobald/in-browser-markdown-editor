@@ -3,13 +3,24 @@ import useRenderMD from '../hooks/useRenderMD'
 import Icon from './utility/Icon'
 import showPreviewIcon from '../assets/icon-show-preview.svg'
 import hidePreviewIcon from '../assets/icon-hide-preview.svg'
+import { useEffect } from 'react'
 
 export default function Documents({ activeFile }) {
-	const { content } = activeFile
 	const [showPreview, setShowPreview] = useState(false)
+	const [mdText, setMdText] = useState(activeFile.content)
+	const [preview, setPreview] = useState(useRenderMD(mdText))
 	function handleShowPreview() {
 		setShowPreview((prev) => !prev)
 	}
+
+	useEffect(() => {
+		setMdText(activeFile.content)
+		setPreview(useRenderMD(activeFile.content))
+	}, [activeFile])
+
+	useEffect(() => {
+		setPreview(useRenderMD(mdText))
+	}, [mdText])
 
 	let previewClassName = 'flex-1 min-w-[50vw] overflow-y-auto md:block'
 	previewClassName += !showPreview ? ' hidden' : ''
@@ -23,9 +34,12 @@ export default function Documents({ activeFile }) {
 							<Icon src={showPreview ? hidePreviewIcon : showPreviewIcon} />
 						</div>
 					</h3>
-					<pre className='whitespace-pre-wrap p-3 text-sm overflow-y-auto'>
-						{content}
-					</pre>
+					<textarea
+						onChange={(e) => setMdText(e.target.value)}
+						value={mdText}
+						spellCheck='false'
+						className='whitespace-pre-wrap p-3 font-Roboto-Mono text-sm overflow-y-auto w-full h-full resize-none outline-none'
+					/>
 				</section>
 			)}
 
@@ -37,7 +51,7 @@ export default function Documents({ activeFile }) {
 					</div>
 				</h3>
 				<div className='lg:max-w-2xl max-w-[100vw] mx-auto p-4 break-words'>
-					{useRenderMD(content)}
+					{preview}
 				</div>
 			</section>
 		</div>
