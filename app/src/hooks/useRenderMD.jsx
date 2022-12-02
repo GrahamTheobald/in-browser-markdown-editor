@@ -53,48 +53,52 @@ function createLineElement(firstWord, line) {
 	switch (firstWord) {
 		case '#':
 			return (
-				<h1 className={LINE_FORMATS[firstWord]}>
+				<h1 key={useId()} className={LINE_FORMATS[firstWord]}>
 					{inlineScan(lineToLetters(restOfLine(line)))}
 				</h1>
 			)
 		case '##':
 			return (
-				<h2 className={LINE_FORMATS[firstWord]}>
+				<h2 key={useId()} className={LINE_FORMATS[firstWord]}>
 					{inlineScan(lineToLetters(restOfLine(line)))}
 				</h2>
 			)
 		case '###':
 			return (
-				<h3 className={LINE_FORMATS[firstWord]}>
+				<h3 key={useId()} className={LINE_FORMATS[firstWord]}>
 					{inlineScan(lineToLetters(restOfLine(line)))}
 				</h3>
 			)
 		case '####':
 			return (
-				<h4 className={LINE_FORMATS[firstWord]}>
+				<h4 key={useId()} className={LINE_FORMATS[firstWord]}>
 					{inlineScan(lineToLetters(restOfLine(line)))}
 				</h4>
 			)
 		case '#####':
 			return (
-				<h5 className={LINE_FORMATS[firstWord]}>
+				<h5 key={useId()} className={LINE_FORMATS[firstWord]}>
 					{inlineScan(lineToLetters(restOfLine(line)))}
 				</h5>
 			)
 		case '######':
 			return (
-				<h6 className={LINE_FORMATS[firstWord]}>
+				<h6 key={useId()} className={LINE_FORMATS[firstWord]}>
 					{inlineScan(lineToLetters(restOfLine(line)))}
 				</h6>
 			)
 		case '>':
 			return (
-				<div className={LINE_FORMATS[firstWord]}>
+				<div key={useId()} className={LINE_FORMATS[firstWord]}>
 					{inlineScan(lineToLetters(restOfLine(line)))}
 				</div>
 			)
 		default:
-			return <p className='pp'>{inlineScan(lineToLetters(line))}</p>
+			return (
+				<p key={useId()} className='pp'>
+					{inlineScan(lineToLetters(line))}
+				</p>
+			)
 	}
 }
 
@@ -114,7 +118,7 @@ function inlineScan(letters) {
 				const entireSpan = urlStart + urlSpan + 1
 				const url = letters.slice(urlStart + 1, urlStart + urlSpan).join('')
 				const element = (
-					<a href={url} className={INLINE_FORMATS[symbol]}>
+					<a href={url} key={useId()} className={INLINE_FORMATS[symbol]}>
 						{searchLetters.slice(0, indexSpan)}
 					</a>
 				)
@@ -123,7 +127,7 @@ function inlineScan(letters) {
 				return
 			}
 			const element = (
-				<span className={INLINE_FORMATS[symbol]}>
+				<span key={useId()} className={INLINE_FORMATS[symbol]}>
 					{inlineScan(searchLetters.slice(0, indexSpan))}
 				</span>
 			)
@@ -164,23 +168,31 @@ function inlineSearchSettings(letters, index, symbol) {
 }
 
 function createUnorderedList(line, lines, _lines) {
-	const block = [<li>{inlineScan(lineToLetters(restOfLine(line)))}</li>]
+	const block = [
+		<li key={useId()}>{inlineScan(lineToLetters(restOfLine(line)))}</li>,
+	]
 	while (lines.length > 0) {
 		const next = lines.shift().split(' ')
 
 		if (next[0] !== '-') {
 			lines.unshift(next.join(' '))
-			const element = <ul className='pul'>{block}</ul>
+			const element = (
+				<ul key={useId()} className='pul'>
+					{block}
+				</ul>
+			)
 			_lines.push(element)
 			return
 		}
-		block.push(<li>{inlineScan(lineToLetters(restOfLine(next)))}</li>)
+		block.push(
+			<li key={useId()}>{inlineScan(lineToLetters(restOfLine(next)))}</li>
+		)
 	}
 }
 
 function createOrderedList(line, lines, _lines) {
 	const block = [
-		<li data-number={line[0]}>
+		<li key={useId()} data-number={line[0]}>
 			{inlineScan(lineToLetters(restOfLine(line)))}
 		</li>,
 	]
@@ -189,12 +201,16 @@ function createOrderedList(line, lines, _lines) {
 
 		if (!orderedListCheck(next[0])) {
 			lines.unshift(next.join(' '))
-			const element = <ol className='pol'>{block}</ol>
+			const element = (
+				<ol key={useId()} className='pol'>
+					{block}
+				</ol>
+			)
 			_lines.push(element)
 			return
 		}
 		block.push(
-			<li data-number={next[0]}>
+			<li key={useId()} data-number={next[0]}>
 				{inlineScan(lineToLetters(restOfLine(next)))}
 			</li>
 		)
@@ -206,7 +222,11 @@ function createCodeBlock(lines, _lines) {
 	while (lines.length > 0) {
 		const next = lines.shift()
 		if (next == '```') {
-			const element = <pre className='pblockc'>{block.join('\n')}</pre>
+			const element = (
+				<pre key={useId()} className='pblockc'>
+					{block.join('\n')}
+				</pre>
+			)
 			_lines.push(element)
 			return
 		}
