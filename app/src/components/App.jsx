@@ -7,7 +7,7 @@ import data from '../data/data.json'
 export const HandlerContext = createContext()
 
 function App() {
-	const [sidebarOpen, setSidebarOpen] = useState(false)
+	const [sidebarOpen, setSidebarOpen] = useState(true)
 	const [files, setFiles] = useState(data)
 	const [activeFileID, setActiveFileID] = useState(2)
 

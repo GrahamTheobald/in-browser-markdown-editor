@@ -2,6 +2,7 @@ import { useContext, useState, useRef } from 'react'
 import { HandlerContext } from './App'
 import Icon from './utility/Icon'
 import documentIcon from '../assets/icon-document.svg'
+import formatDate from '../hooks/formatDate'
 
 export default function File({ content }) {
 	const { createdAt, name } = content
@@ -45,14 +46,4 @@ export default function File({ content }) {
 			</div>
 		</div>
 	)
-}
-
-function formatDate(milliseconds) {
-	const date = new Date(milliseconds)
-	const options = {
-		day: '2-digit',
-		month: 'long',
-		year: 'numeric',
-	}
-	return new Intl.DateTimeFormat('en-GB', options).format(date)
 }
