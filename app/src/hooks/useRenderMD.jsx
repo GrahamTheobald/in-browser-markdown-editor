@@ -1,4 +1,4 @@
-import { useEffect, useId } from 'react'
+import { useEffect, useState, useId } from 'react'
 
 const LINE_FORMATS = {
 	'#': 'ph1',
@@ -23,9 +23,23 @@ const INLINE_FORMATS = {
 
 const INLINE_SYMBOLS = ['`', '[', '*', '**', '_', '__']
 
-let ID = 1
+let ID = 1098092
 
-export default function useRenderMD(markdown) {
+export default function useRenderMD(activeFile, mdText) {
+	const [html, setHtml] = useState(RenderMD(activeFile.content, ID))
+
+	useEffect(() => {
+		setHtml(RenderMD(activeFile.content, ID))
+	}, [activeFile])
+
+	useEffect(() => {
+		setHtml(RenderMD(mdText))
+	}, [mdText])
+
+	return [html, setHtml]
+}
+
+function RenderMD(markdown, ID) {
 	let lines = markdown.split('\n')
 	const _lines = []
 

@@ -1,26 +1,21 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import useRenderMD from '../hooks/useRenderMD'
 import Icon from './utility/Icon'
 import showPreviewIcon from '../assets/icon-show-preview.svg'
 import hidePreviewIcon from '../assets/icon-hide-preview.svg'
-import { useEffect } from 'react'
 
 export default function Documents({ activeFile }) {
 	const [showPreview, setShowPreview] = useState(false)
 	const [mdText, setMdText] = useState(activeFile.content)
-	const [preview, setPreview] = useState(useRenderMD(mdText))
+	const [html] = useRenderMD(activeFile, mdText)
+
 	function handleShowPreview() {
 		setShowPreview((prev) => !prev)
 	}
 
 	useEffect(() => {
 		setMdText(activeFile.content)
-		setPreview(useRenderMD(activeFile.content))
 	}, [activeFile])
-
-	useEffect(() => {
-		setPreview(useRenderMD(mdText))
-	}, [mdText])
 
 	let previewClassName = 'flex-1 min-w-[50vw] overflow-y-auto md:block'
 	previewClassName += !showPreview ? ' hidden' : ''
@@ -51,7 +46,7 @@ export default function Documents({ activeFile }) {
 					</div>
 				</h3>
 				<div className='lg:max-w-2xl max-w-[100vw] mx-auto p-4 break-words'>
-					{preview}
+					{html}
 				</div>
 			</section>
 		</div>
