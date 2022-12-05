@@ -33,9 +33,8 @@ export default function File({ content }) {
 					</form>
 				) : (
 					<p
-						onFocus={() => {
+						onDoubleClick={() => {
 							setFocused(true)
-							input.current.focus()
 						}}
 						tabIndex={-1}
 						className='text-light1 text-sm break-all h-6 flex items-center'

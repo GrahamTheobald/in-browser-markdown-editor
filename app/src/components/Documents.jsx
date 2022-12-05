@@ -4,7 +4,7 @@ import Icon from './utility/Icon'
 import showPreviewIcon from '../assets/icon-show-preview.svg'
 import hidePreviewIcon from '../assets/icon-hide-preview.svg'
 
-export default function Documents({ activeFile }) {
+export default function Documents({ activeFile, saveMd, handleSaveMd }) {
 	const [showPreview, setShowPreview] = useState(false)
 	const [mdText, setMdText] = useState(activeFile.content)
 	const [html] = useRenderMD(activeFile, mdText)
@@ -12,6 +12,11 @@ export default function Documents({ activeFile }) {
 	function handleShowPreview() {
 		setShowPreview((prev) => !prev)
 	}
+
+	useEffect(() => {
+		if (!saveMd) return
+		handleSaveMd(activeFile.id, mdText)
+	}, [saveMd])
 
 	useEffect(() => {
 		setMdText(activeFile.content)
