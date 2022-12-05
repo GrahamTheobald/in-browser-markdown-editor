@@ -5,7 +5,7 @@ import Button from './Button'
 import File from './File'
 import ThemeToggle from './ThemeToggle'
 
-export default function SideBar({ sidebarOpen, files }) {
+export default function SideBar({ sidebarOpen, files, newDocument }) {
 	return (
 		<>
 			{sidebarOpen && (
@@ -15,9 +15,9 @@ export default function SideBar({ sidebarOpen, files }) {
 					</div>
 					<h2 className=' text-mid1 tracking-wide my-6'>MY DOCUMENTS</h2>
 					<div>
-						<Button text={'+ New Document'} />
+						<Button handler={newDocument} text={'+ New Document'} />
 					</div>
-					<ul className=' py-6 space-y-6'>
+					<ul className=' py-6 space-y-6 max-h-full mb-6 overflow-auto'>
 						{files.map((file) => {
 							return (
 								<li key={file.id}>

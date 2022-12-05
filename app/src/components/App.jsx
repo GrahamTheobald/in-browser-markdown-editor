@@ -4,6 +4,8 @@ import Nav from './Nav'
 import Documents from './Documents'
 import data from '../data/data.json'
 import { useEffect } from 'react'
+import uuid4 from 'uuid4'
+import nameDocument from '../hooks/nameDocument'
 
 export const HandlerContext = createContext()
 
@@ -58,11 +60,26 @@ function App() {
 		setFiles(_files)
 		setSaveMdButton(false)
 	}
+	function handleNewDocument() {
+		const _files = [...files]
+		const newDocument = {
+			id: uuid4(),
+			createdAt: Date.now(),
+			name: nameDocument(files),
+			content: '',
+		}
+		_files.push(newDocument)
+		setFiles(_files)
+	}
 
 	return (
 		<HandlerContext.Provider value={HandlerContextValue}>
 			<div className='font-Roboto flex h-screen overflow-x-hidden'>
-				<Sidebar sidebarOpen={sidebarOpen} files={files} />
+				<Sidebar
+					newDocument={handleNewDocument}
+					sidebarOpen={sidebarOpen}
+					files={files}
+				/>
 				<div className='flex-grow w-full min-w-min h-full overflow-x-hidden '>
 					<Nav
 						sidebarOpen={sidebarOpen}
