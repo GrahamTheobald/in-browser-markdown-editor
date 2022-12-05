@@ -16,7 +16,7 @@ function App() {
 	const [dark, setDark] = useState(
 		window.matchMedia('(prefers-color-scheme: dark)').matches
 	)
-	const [activeFileID, setActiveFileID] = useState(2)
+	const [activeFileID, setActiveFileID] = useState(1)
 
 	const activeFile = files.find((file) => file.id === activeFileID)
 
@@ -49,9 +49,11 @@ function App() {
 	}
 	function handleDelete() {
 		const _files = files.filter((f) => f.id !== activeFileID)
+		if (_files.length === 0) {
+			_files.push(data[0])
+		}
 		setFiles(_files)
-		console.log(_files)
-		setActiveFileID(_files[0]?.id)
+		setActiveFileID(_files[0].id)
 	}
 	function handleSaveMd(id, content) {
 		const _files = [...files]
