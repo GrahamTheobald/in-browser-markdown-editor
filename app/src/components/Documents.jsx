@@ -15,7 +15,7 @@ export default function Documents({ activeFile, saveMd, handleSaveMd }) {
 
 	useEffect(() => {
 		if (!saveMd) return
-		handleSaveMd(activeFile.id, mdText)
+		handleSaveMd(activeFile.id)
 	}, [saveMd])
 
 	useEffect(() => {
