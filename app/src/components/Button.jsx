@@ -10,7 +10,7 @@ export default function Button({
 	return (
 		<button
 			onClick={() => handler()}
-			className=' bg-orange1 flex items-center justify-center gap-2 p-2 rounded-md text-light1 w-full'
+			className=' bg-orange1 flex items-center justify-center gap-2 p-2 rounded-md text-light1 w-full hover:bg-orange2'
 		>
 			{src && <Icon src={src} />}
 			<p className={small ? 'hidden md:block' : undefined}>{text}</p>

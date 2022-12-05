@@ -13,7 +13,10 @@ export default function Delete() {
 	return (
 		<>
 			{modal && <Modal closeModal={handleCloseModal} />}
-			<div onClick={() => setModal(true)} className='hover:cursor-pointer'>
+			<div
+				onClick={() => setModal(true)}
+				className='hover:cursor-pointer hover:brightness-200 transition'
+			>
 				<Icon src={del} small={true} />
 			</div>
 		</>
