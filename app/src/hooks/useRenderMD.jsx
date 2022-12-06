@@ -139,7 +139,6 @@ function inlineScan(letters) {
 					</a>
 				)
 				letters.splice(index, entireSpan, element)
-
 				return
 			}
 			const element = (
@@ -151,7 +150,38 @@ function inlineScan(letters) {
 			return
 		}
 	})
+	// return joinLine(letters)
 	return letters
+}
+
+function joinLine(line) {
+	const joined = []
+	let startIndex = 0
+	const endIndex = line.length
+	line.forEach((l, i) => {
+		console.log(typeof l)
+		if (i === endIndex - 1) {
+			if (typeof l === 'string') {
+				const str = line.slice(startIndex, endIndex).join('')
+				joined.push(str)
+				return
+			}
+			if (typeof l === 'object') {
+				const str = line.slice(startIndex, endIndex - 1).join('')
+				joined.push(str)
+				joined.push(l)
+				return
+			}
+		}
+		if (typeof l === 'string') return
+		if (typeof l === 'object') {
+			const str = line.slice(startIndex, i).join('')
+			joined.push(str)
+			joined.push(l)
+			startIndex = i + 1
+		}
+	})
+	return joined
 }
 
 function inlineSearch(letters, symbol, symbolSpan) {
