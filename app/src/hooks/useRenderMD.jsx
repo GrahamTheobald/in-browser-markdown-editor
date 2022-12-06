@@ -159,7 +159,6 @@ function joinLine(line) {
 	let startIndex = 0
 	const endIndex = line.length
 	line.forEach((l, i) => {
-		console.log(typeof l)
 		if (i === endIndex - 1) {
 			if (typeof l === 'string') {
 				const str = line.slice(startIndex, endIndex).join('')

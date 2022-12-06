@@ -1,17 +1,20 @@
-import { useState, createContext } from 'react'
+import { useState, createContext, useEffect } from 'react'
 import Sidebar from './Sidebar'
 import Nav from './Nav'
 import Documents from './Documents'
 import data from '../data/data.json'
-import { useEffect } from 'react'
 import uuid4 from 'uuid4'
 import nameDocument from '../hooks/nameDocument'
+import useLocalStorage from '../hooks/useLocalStorage'
+import STORAGE_KEY from '../data/storageKey'
 
 export const HandlerContext = createContext()
 
 function App() {
+	const storage = JSON.parse(localStorage.getItem(`${STORAGE_KEY}-files`))
+
+	const [files, setFiles] = useState(storage ?? data)
 	const [sidebarOpen, setSidebarOpen] = useState(false)
-	const [files, setFiles] = useState(data)
 	const [saveMdButton, setSaveMdButton] = useState(false)
 	const [dark, setDark] = useState(
 		window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -72,7 +75,9 @@ function App() {
 		}
 		_files.push(newDocument)
 		setFiles(_files)
+		setActiveFileID(newDocument.id)
 	}
+	useLocalStorage(files)
 
 	return (
 		<HandlerContext.Provider value={HandlerContextValue}>
